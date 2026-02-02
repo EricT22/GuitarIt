@@ -1,4 +1,8 @@
-GuitarIt.xcodeproj
+xcuserdata/
+*.xcuserstate
+
+timeline.xctimeline
+playground.xcworkspace
 
 .build/
 
