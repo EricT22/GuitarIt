@@ -1,5 +1,6 @@
 xcuserdata/
 *.xcuserstate
+*.xcscmblueprint
 
 timeline.xctimeline
 playground.xcworkspace
