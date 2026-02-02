@@ -16,6 +16,11 @@
 			path = GuitarIt;
 			sourceTree = "<group>";
 		};
+		070C7E3D2F3027730066D872 /* Logbook */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Logbook;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +37,7 @@
 		070C7E232F3021340066D872 = {
 			isa = PBXGroup;
 			children = (
+				070C7E3D2F3027730066D872 /* Logbook */,
 				070C7E2E2F3021340066D872 /* GuitarIt */,
 				070C7E2D2F3021340066D872 /* Products */,
 			);
@@ -62,6 +68,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				070C7E2E2F3021340066D872 /* GuitarIt */,
+				070C7E3D2F3027730066D872 /* Logbook */,
 			);
 			name = GuitarIt;
 			packageProductDependencies = (
