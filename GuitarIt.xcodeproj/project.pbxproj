@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		070C7E412F3028550066D872 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 070C7E402F30284F0066D872 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		070C7E2C2F3021340066D872 /* GuitarIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GuitarIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		070C7E402F30284F0066D872 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,6 +42,7 @@
 		070C7E232F3021340066D872 = {
 			isa = PBXGroup;
 			children = (
+				070C7E402F30284F0066D872 /* .gitignore */,
 				070C7E3D2F3027730066D872 /* Logbook */,
 				070C7E2E2F3021340066D872 /* GuitarIt */,
 				070C7E2D2F3021340066D872 /* Products */,
@@ -116,6 +122,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070C7E412F3028550066D872 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

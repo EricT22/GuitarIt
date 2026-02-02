@@ -1,0 +1,5 @@
+GuitarIt.xcodeproj
+
+.build/
+
+.DS_Store
