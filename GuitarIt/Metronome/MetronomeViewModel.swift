@@ -1,9 +1,40 @@
+// click.wav sound by:
+
+// Metronome.wav by Druminfected --
+// https://freesound.org/s/250552/ --
+// License: Creative Commons 0
+
+
 import Foundation
 import Combine
 
 // ViewModel for the Metronome section
 class MetronomeViewModel: ObservableObject {
-    // Required by ObservableObject protocol in iOS 17+
-    let objectWillChange = ObservableObjectPublisher()
-    // Add metronome logic here
+    // default metronome bpm
+    @Published var bpm: Int = 120;
+    @Published var isRunning: Bool = false;
+    
+    private let metronome = Metronome()
+    private var timer: Timer? = nil
+    
+    func startStop() {
+        isRunning.toggle()
+        
+        if (isRunning) {
+            playMetronome()
+        } else {
+            stopMetronome()
+        }
+    }
+    
+    func stopMetronome() {
+        timer?.invalidate() // stops from running and removes requests from "run loop"
+        timer = nil // throws the timer away
+    }
+
+    func playMetronome() {
+        timer = Timer.scheduledTimer(withTimeInterval: 60.0 / Double(bpm), repeats: true) {_ in 
+            self.metronome.click()
+        }
+    }
 }
