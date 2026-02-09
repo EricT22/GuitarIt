@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BPMSelector: View {
     @Binding var bpm: Int
+    var onChange: (() -> Void)? = nil
     
     
     var body: some View {
@@ -11,6 +12,9 @@ struct BPMSelector: View {
             }
         }
         .pickerStyle(.wheel)
+        .onChange(of: bpm) {
+            onChange?()
+        }
         .clipped()
     }
 }

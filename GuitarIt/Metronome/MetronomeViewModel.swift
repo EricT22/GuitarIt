@@ -12,15 +12,15 @@ import Combine
 class MetronomeViewModel: ObservableObject {
     // default metronome bpm
     @Published var bpm: Int = 120;
-    @Published var isRunning: Bool = false;
+    @Published var started: Bool = false;
     
     private let metronome = Metronome()
     private var timer: Timer? = nil
     
     func startStop() {
-        isRunning.toggle()
+        started.toggle()
         
-        if (isRunning) {
+        if (started) {
             playMetronome()
         } else {
             stopMetronome()
@@ -33,8 +33,17 @@ class MetronomeViewModel: ObservableObject {
     }
 
     func playMetronome() {
-        timer = Timer.scheduledTimer(withTimeInterval: 60.0 / Double(bpm), repeats: true) {_ in 
+        
+        
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 60.0 / Double(bpm), repeats: true) {_ in
             self.metronome.click()
+        }
+    }
+    
+    func onChange(){
+        if (started) {
+            startStop()
         }
     }
 }

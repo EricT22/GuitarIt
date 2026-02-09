@@ -16,14 +16,16 @@ struct MetronomeView: View {
             Spacer()
             Text("BPM")
                 .font(.title3)
-            BPMSelector(bpm: $viewModel.bpm)
+            BPMSelector(bpm: $viewModel.bpm) {
+                viewModel.onChange()
+            }
             Spacer()
             Button(
                 action: {
                     // functionality
                     viewModel.startStop()
                 }, label: {
-                    Image(systemName: viewModel.isRunning ? "stop.fill" : "play.fill")
+                    Image(systemName: viewModel.started ? "stop.fill" : "play.fill")
                         .font(.system(size: 40))
                         .frame(width: 50, height: 50)
                 })
