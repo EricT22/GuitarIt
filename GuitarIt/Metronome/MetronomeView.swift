@@ -17,7 +17,7 @@ struct MetronomeView: View {
             Text("BPM")
                 .font(.title3)
             BPMSelector(bpm: $viewModel.bpm) {
-                viewModel.onChange()
+                viewModel.onChange() // passing on change function to selector 
             }
             Spacer()
             Button(

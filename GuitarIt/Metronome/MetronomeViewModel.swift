@@ -34,8 +34,6 @@ class MetronomeViewModel: ObservableObject {
 
     func playMetronome() {
         
-        
-        
         timer = Timer.scheduledTimer(withTimeInterval: 60.0 / Double(bpm), repeats: true) {_ in
             self.metronome.click()
         }

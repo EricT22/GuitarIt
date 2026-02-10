@@ -2,6 +2,8 @@ import SwiftUI
 
 struct BPMSelector: View {
     @Binding var bpm: Int
+    
+    // function that has no return value and may or may not exist
     var onChange: (() -> Void)? = nil
     
     
@@ -13,7 +15,7 @@ struct BPMSelector: View {
         }
         .pickerStyle(.wheel)
         .onChange(of: bpm) {
-            onChange?()
+            onChange?() // on change call function if it exists
         }
         .clipped()
     }
