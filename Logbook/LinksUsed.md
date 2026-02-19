@@ -15,7 +15,14 @@ https://www.izotope.com/en/learn/tuning-standards-explained#:~:text=Tuning%20Sta
 
 Crepe
 https://github.com/marl/crepe
+https://arxiv.org/pdf/1802.06182
 
 
 Swift W3Schools Tutorial (used mainly for string manipulation stuff)
 https://www.w3schools.com/swift/default.asp
+
+
+Tensorflow to  CoreML
+https://www.tensorflow.org/guide/function
+https://apple.github.io/coremltools/docs-guides/source/target-conversion-formats.html
+https://www.slingacademy.com/article/tensorflow-savedmodel-understanding-model-signatures/

@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct GuitarItApp: App {
+    let t = test() // testing if coreml crepe can run
     var body: some Scene {
         WindowGroup {
             ContentView()
