@@ -22,7 +22,7 @@ Made scripts to change crepe to coreml, uninstalled tensorflow and reinstalled t
 
 
 Difficulties: 
-Tried using a saved model and .signatures ["serving_default"] to get at the concrete function and just save the model -- didn't work
-Tired using tf.function.get_concrete_function instead -- didn't work
-Saw that .convert can also just take the savedmodel itself instead of just the concrete function
-Plopped it in and it worked
+Tried using a saved model and .signatures ["serving_default"] to get at the concrete function and just save the model -- didn't work  
+Tried using tf.function.get_concrete_function instead -- didn't work  
+Saw that .convert can also just take the savedmodel itself instead of just the concrete function  
+Plopped it in and it worked  
