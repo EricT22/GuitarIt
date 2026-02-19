@@ -18,7 +18,7 @@ Installed homebrew, python, pip (~30 min)
 Installed tensorflow, coremltools, crepe libraries (~10 min)
 
 
-Made scripts to change crepe to coreml, uninstalled tensorflow and reinstalled tensorflow-macos version 2.12 (version that works with coreml) (~3.5hours)
+Made scripts to change crepe to coreml, uninstalled tensorflow and reinstalled tensorflow-macos version 2.12 (version that works with coreml) (~4hours 15 min)
 
 
 Difficulties: 
