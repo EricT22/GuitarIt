@@ -26,3 +26,6 @@ Tried using a saved model and .signatures ["serving_default"] to get at the conc
 Tried using tf.function.get_concrete_function instead -- didn't work  
 Saw that .convert can also just take the savedmodel itself instead of just the concrete function  
 Plopped it in and it worked  
+
+
+Asked user for mic access by adding microphone privacy requirement on Info.plist (~5 min)

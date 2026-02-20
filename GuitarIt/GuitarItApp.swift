@@ -9,7 +9,12 @@ import SwiftUI
 
 @main
 struct GuitarItApp: App {
-    let t = test() // testing if coreml crepe can run
+    let audio = AudioCapture()
+    
+    init() {
+        try? audio.start()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
