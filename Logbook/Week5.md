@@ -28,4 +28,4 @@ Saw that .convert can also just take the savedmodel itself instead of just the c
 Plopped it in and it worked  
 
 
-Asked user for mic access by adding microphone privacy requirement on Info.plist (~5 min)
+Got audio capture working w/ test and asked user for mic access by adding microphone privacy requirement on Info.plist (~30 min)  
