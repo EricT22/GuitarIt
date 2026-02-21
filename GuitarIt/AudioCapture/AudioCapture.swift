@@ -1,5 +1,4 @@
 import AVFoundation
-import CoreML
 
 class AudioCapture {
     private var audioEngine = AVAudioEngine()
