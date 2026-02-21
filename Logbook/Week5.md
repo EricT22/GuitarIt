@@ -29,3 +29,5 @@ Plopped it in and it worked
 
 
 Got audio capture working w/ test and asked user for mic access by adding microphone privacy requirement on Info.plist (~30 min)  
+
+Realized math didn't carry over into the conversion, just NN. Converted Crepe's Python frequency estimation and confidence score to swift (~ 2hrs 30 min)
