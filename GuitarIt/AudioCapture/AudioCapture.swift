@@ -3,6 +3,7 @@ import CoreML
 
 class AudioCapture {
     private var audioEngine = AVAudioEngine()
+    private var crepe = Crepe()
     
     
     func start() throws {
@@ -18,7 +19,13 @@ class AudioCapture {
         
     }
     
-    func handleAudio(buffer: AVAudioPCMBuffer) {
+    func stop(){
+        audioEngine.inputNode.removeTap(onBus: 0)
+        audioEngine.stop()
+        print("stopped")
+    }
+    
+    private func handleAudio(buffer: AVAudioPCMBuffer) {
         guard let monoChannelData = buffer.floatChannelData?[0] else { return } // gets data from the first channel (makes it mono)
         let frameCount = Int(buffer.frameLength)
         
@@ -36,11 +43,12 @@ class AudioCapture {
             // Getting the 1024 samples for crepe
             let frame = Array(downsampled[0..<1024])
             
-            
+            if let result = crepe.predict(from: frame){
+                let pitch = result.pitch
+                let confidence = result.confidence
+                
+                print("Pitch: \(pitch), Confidence: \(confidence)")
+            }
         }
     }
-    
-    
-    
-
 }

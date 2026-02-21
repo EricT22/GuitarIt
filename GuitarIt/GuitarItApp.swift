@@ -8,13 +8,7 @@
 import SwiftUI
 
 @main
-struct GuitarItApp: App {
-    let audio = AudioCapture()
-    
-    init() {
-        try? audio.start()
-    }
-    
+struct GuitarItApp: App {    
     var body: some Scene {
         WindowGroup {
             ContentView()

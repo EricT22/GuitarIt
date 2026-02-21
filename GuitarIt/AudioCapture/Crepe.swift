@@ -1,3 +1,9 @@
+// Conversion to MLprogram reduced CREPE to core nn features
+// NN returns an activation vector with 360 bins that represent pitch frequencies
+// Have to compute predicted frequency and confidence from these vectors
+// Will use the same math as used in the CREPE Github library
+// https://github.com/marl/crepe/blob/master/crepe/core.py
+
 import CoreML
 
 class Crepe {
@@ -18,12 +24,6 @@ class Crepe {
     }
     
     func analyzeCREPEOutput(_ bins : MLMultiArray) -> (pitch: Float, confidence: Float) {
-        // Conversion to MLprogram reduced CREPE to core nn features
-        // NN returns an activation vector with 360 bins that represent pitch frequencies
-        // Have to compute predicted frequency and confidence from these vectors
-        // Will use the same math as used in the CREPE Github library
-        // https://github.com/marl/crepe/blob/master/crepe/core.py
-        
         var center = 0
         var maxVal = -Float.infinity
         
