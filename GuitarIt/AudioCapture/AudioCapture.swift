@@ -4,7 +4,7 @@ class AudioCapture {
     private var audioEngine = AVAudioEngine()
     private var crepe = Crepe()
     
-    var onPitch: ((Float, Float) -> Void)?
+    var onPitchPredict: ((Float, Float) -> Void)?
     
     func start() throws {
         let input = audioEngine.inputNode
@@ -48,7 +48,7 @@ class AudioCapture {
                 let confidence = result.confidence
                 
                 print("Pitch: \(pitch), Confidence: \(confidence)")
-                onPitch?(pitch, confidence)
+                onPitchPredict?(pitch, confidence)
             }
         }
     }

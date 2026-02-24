@@ -17,13 +17,13 @@ class TunerViewModel: ObservableObject {
     private let notes: [String] = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
     
     init(){
-        audioCapture.onPitch = {[weak self] pitch, confidence in
+        audioCapture.onPitchPredict = {[weak self] pitch, confidence in
             guard confidence > 0.2 else { return }
-            self?.updatePitch(frequency: Double(pitch))
+            self?.updateDisplayedNote(frequency: Double(pitch))
         }
     }
     
-    private func updatePitch(frequency f: Double){
+    private func updateDisplayedNote(frequency f: Double){
         guard f > 0 else {
             // Pitch detection doesn't happen on main thread, happens on the AVAudioEngine callback
             // UI elements should be updated on the main thread
