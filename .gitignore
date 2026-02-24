@@ -3,6 +3,7 @@
 *.xcodeproj/xcshareddata
 *.xcodeproj/xcshareddata/**
 
+*/Assets.xcassets
 
 xcuserdata/
 *.xcuserstate
