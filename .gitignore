@@ -1,6 +1,11 @@
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata
+
 xcuserdata/
 *.xcuserstate
 *.xcscmblueprint
+
 
 timeline.xctimeline
 playground.xcworkspace
