@@ -4,13 +4,14 @@ class AudioCapture {
     private var audioEngine = AVAudioEngine()
     private var crepe = Crepe()
     
+    var onPitch: ((Float, Float) -> Void)?
     
     func start() throws {
         let input = audioEngine.inputNode
         let format = input.inputFormat(forBus: 0) // mic runs at 48kHz, not what crepe needs but can't resampe here
         
-        input.installTap(onBus: 0, bufferSize: 1024, format: format) {buffer, _ in
-            self.handleAudio(buffer: buffer) // buffers filled with audio data @ intervals of 100ms
+        input.installTap(onBus: 0, bufferSize: 1024, format: format) {[weak self] buffer, _ in
+            self?.handleAudio(buffer: buffer) // buffers filled with audio data @ intervals of 100ms
         }
         
         try audioEngine.start()
@@ -47,6 +48,7 @@ class AudioCapture {
                 let confidence = result.confidence
                 
                 print("Pitch: \(pitch), Confidence: \(confidence)")
+                onPitch?(pitch, confidence)
             }
         }
     }

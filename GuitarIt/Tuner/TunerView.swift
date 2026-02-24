@@ -19,10 +19,10 @@ struct TunerView: View {
                 } // gets rid of keyboard if its there
             VStack {
                 Spacer()
-                Text("A")
+                Text(viewModel.currentNote)
                     .font(.system(size: 200))
                     .fontWeight(.bold)
-                Text("0 cents")
+                Text("\(viewModel.centsOffset, specifier: "%.1f") cents")
                     .font(.largeTitle)
                 Spacer()
                 HStack {

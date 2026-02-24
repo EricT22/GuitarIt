@@ -26,3 +26,6 @@ Tensorflow to  CoreML
 https://www.tensorflow.org/guide/function
 https://apple.github.io/coremltools/docs-guides/source/target-conversion-formats.html
 https://www.slingacademy.com/article/tensorflow-savedmodel-understanding-model-signatures/
+
+MIDI Standard
+https://en.wikipedia.org/wiki/MIDI_tuning_standard
