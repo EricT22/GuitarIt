@@ -26,6 +26,8 @@ class AudioCapture {
     }
     
     private func handleAudio(buffer: AVAudioPCMBuffer) {
+//      Crepe requires audio at 16khz, downsampling required
+        
         guard let monoChannelData = buffer.floatChannelData?[0] else { return } // gets data from the first channel (makes it mono)
         let frameCount = Int(buffer.frameLength)
         
