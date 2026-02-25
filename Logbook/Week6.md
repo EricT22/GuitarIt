@@ -2,3 +2,7 @@ Refactored tuner math into its own class and bound audio capture to the on/off s
 
 Using MIDI to calculate the closest note and cent offset, updating UI accordingly (~1hr 30 min)
 UI tuner updates (red/yellow/green depending on how close the frequency is) (~30 min)
+
+Researching how to connect w/ Lyria RealTime using Google Firebase (~30 min)
+
+Exponential smoothing for tuner to avoid big jumps (~45 min)
