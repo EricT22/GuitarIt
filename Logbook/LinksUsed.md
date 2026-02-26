@@ -32,3 +32,7 @@ https://en.wikipedia.org/wiki/MIDI_tuning_standard
 
 Exponential Smoothing for Tuner (used so that there are no wild jumps)
 https://en.wikipedia.org/wiki/Exponential_smoothing
+
+
+Firebase for iOS
+https://firebase.google.com/docs/ios/setup
