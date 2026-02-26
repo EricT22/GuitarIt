@@ -16,3 +16,5 @@ playground.xcworkspace
 .build/
 
 .DS_Store
+
+GoogleService-Info.plist
