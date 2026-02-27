@@ -36,3 +36,6 @@ https://en.wikipedia.org/wiki/Exponential_smoothing
 
 Firebase for iOS
 https://firebase.google.com/docs/ios/setup
+
+Anonymous Authentication
+https://firebase.google.com/docs/auth/ios/anonymous-auth
