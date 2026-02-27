@@ -15,7 +15,7 @@ class TunerViewModel: ObservableObject {
     private let audioCapture = AudioCapture()
     
     private let notes: [String] = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-    private let baseAlpha: Double = 0.25 // starting point, may change later
+    private let baseAlpha: Double = 0.2
     private var smoothedFrequency: Double? = nil
     
     init(){
@@ -37,9 +37,9 @@ class TunerViewModel: ObservableObject {
         }
         
         // Smoothing predicted frequency
-        // Confidence is usually b/t 0.2-0.6 so normalizing that and using it as a weight for exponential smoothing
-        let minConf = 0.2
-        let maxConf = 0.6
+        // Confidence is usually b/t 0.1-0.6 so normalizing that and using it as a weight for exponential smoothing
+        let minConf = 0.1
+        let maxConf = 0.5
         let clampedConf: Double = min(max(conf, minConf), maxConf)
         let normalizedConf = (clampedConf - minConf) / (maxConf - minConf)
         
@@ -67,7 +67,19 @@ class TunerViewModel: ObservableObject {
         
         var cents = 1200 * log2(freq / targetFrequency)
         cents = max(-50, min(50, cents))
-            
+        
+        
+        // Guarding from spikes in frame data
+        let spikeThreshold: Double = 50.0
+        let confThreshold: Double = 0.1
+        
+        if let previousCents = self.centsOffset as Double?,
+           abs(previousCents - cents) > spikeThreshold,
+           conf < confThreshold {
+            // If it's a big spike and confidence is low, then ignore the frame
+            return
+        }
+        
         DispatchQueue.main.async {
             self.currentNote = note
             self.centsOffset = cents
