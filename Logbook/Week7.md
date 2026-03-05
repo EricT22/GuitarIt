@@ -10,3 +10,5 @@ Removed firebase package dependencies (~5min)
 
 
 Worked on Basic UI for tab writing (~2 hours)
+
+Worked on UI and underlying file management logic for tab writing (~2 hours)
