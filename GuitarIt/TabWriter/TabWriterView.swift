@@ -1,17 +1,28 @@
 import SwiftUI
 
+
+
+
+
+
 // View for the TabWriter section
 struct TabWriterView: View {
     // Connects to the TabWriterViewModel
     @StateObject private var viewModel = TabWriterViewModel()
     
-    @State private var storageSetting: StorageOption = .local
+    // Persisting Values
+    // Can store raw value in UserDefaults by using the key "storageOption"
+    @AppStorage("storageOption") private var storageOption: StorageOption = .local
+    
+    // No raw value for this enum, saving index instead in UserDefaults by using the key "sortMode"
+    @AppStorage("sortMode") private var sortMode: SortMode = .favoritesFirst
+    
+    // UI State
     @State private var showSettings: Bool = false
     @State private var isEditing: Bool = false
     
     @State private var tabs: [TabItem] = [];
     
-    @State private var sortMode: SortMode = .favoritesFirst
     
     private var sortedTabs: [TabItem] {
         switch sortMode {
@@ -91,13 +102,10 @@ struct TabWriterView: View {
             }
         }
         .sheet(isPresented: $showSettings, content: {
-            SettingsView(storageOption: $storageSetting, sortMode: $sortMode)
+            SettingsView(storageOption: $storageOption, sortMode: $sortMode)
                 .presentationDetents([.height(300)])
         })
     }
-
-    
-    
 }
 
 #Preview {

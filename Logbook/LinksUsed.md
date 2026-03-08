@@ -39,3 +39,7 @@ https://firebase.google.com/docs/ios/setup
 
 Anonymous Authentication
 https://firebase.google.com/docs/auth/ios/anonymous-auth
+
+
+App Storage and UserDefaults
+https://developer.apple.com/documentation/SwiftUI/AppStorage

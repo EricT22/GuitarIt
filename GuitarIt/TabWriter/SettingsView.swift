@@ -1,16 +1,5 @@
 import SwiftUI
 
-enum StorageOption: String, CaseIterable {
-    case local = "Local"
-    case cloud = "iCloud"
-}
-
-enum SortMode {
-    case favoritesFirst
-    case byDate
-    case lastUsed
-}
-
 
 struct SettingsView: View {
     @Binding var storageOption: StorageOption
