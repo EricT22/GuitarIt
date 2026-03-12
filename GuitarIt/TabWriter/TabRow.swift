@@ -16,6 +16,7 @@ struct TabRow: View {
                     .foregroundStyle(tab.isFavorite ? Color.yellow : Color.secondary)
                     .font(.system(size: 20))
             })
+                .buttonStyle(.plain)
         }
     }
 }

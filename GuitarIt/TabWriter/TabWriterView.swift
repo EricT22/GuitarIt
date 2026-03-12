@@ -1,10 +1,5 @@
 import SwiftUI
 
-
-
-
-
-
 // View for the TabWriter section
 struct TabWriterView: View {
     // Connects to the TabWriterViewModel
@@ -20,26 +15,6 @@ struct TabWriterView: View {
     // UI State
     @State private var showSettings: Bool = false
     @State private var isEditing: Bool = false
-    
-    @State private var tabs: [TabItem] = [];
-    
-    
-    private var sortedTabs: [TabItem] {
-        switch sortMode {
-        case .favoritesFirst:
-                return tabs.sorted { // returns true if $0 should come before $1 (aka if left should go before right)
-                    if ($0.isFavorite != $1.isFavorite) {
-                        return $0.isFavorite && !$1.isFavorite
-                    }
-                    return $0.lastUsed > $1.lastUsed
-                }
-        case .lastUsed:
-            return tabs.sorted { $0.lastUsed > $1.lastUsed }
-        case .byDate:
-            return tabs.sorted { $0.createdAt < $1.createdAt }
-        }
-    }
-    
     
     
     var body: some View {
@@ -68,17 +43,19 @@ struct TabWriterView: View {
                 Spacer()
                 
                 List {
-                    if (tabs.isEmpty){
+                    let sortedTabs = viewModel.sortedTabs(sortMode: sortMode)
+                    
+                    if (sortedTabs.isEmpty){
                         Text("No tabs yet")
                             .foregroundStyle(Color.secondary)
                     } else {
                         ForEach(sortedTabs) { tab in
-                            if let index = tabs.firstIndex(where: { $0.id == tab.id }){
-                                TabRow(tab: $tabs[index])
+                            if let index = viewModel.tabs.firstIndex(where: { $0.id == tab.id }){
+                                TabRow(tab: $viewModel.tabs[index])
                             }
                         }
                         .onDelete(perform: { indexSet in
-                            tabs.remove(atOffsets: indexSet)
+                            viewModel.tabs.remove(atOffsets: indexSet)
                         })
                     }
                 }
@@ -88,7 +65,7 @@ struct TabWriterView: View {
                 Spacer()
                 Button(
                     action: {
-                        tabs.append(TabItem(name: ""))
+                        viewModel.createNewTab()
                         
                     }, label: {
                         Image(systemName: "plus")
