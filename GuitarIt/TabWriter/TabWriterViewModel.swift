@@ -3,7 +3,19 @@ import Combine
 
 // ViewModel for the TabWriter section
 class TabWriterViewModel: ObservableObject {
-    @Published var tabs: [TabItem] = [];
+    @Published var tabs: [TabItem] = [] {
+        didSet {
+            saveTabs()
+        }
+    }
+    
+    private let tabsKey: String = "tabs"
+    
+    
+    init() {
+        loadTabs()
+    }
+    
     
     func sortedTabs(sortMode: SortMode) -> [TabItem] {
         switch sortMode {
@@ -28,5 +40,31 @@ class TabWriterViewModel: ObservableObject {
         let newTab = TabItem(name: "", fileURL: placeholderURL)
         
         tabs.append(newTab)
+    }
+    
+    private func saveTabs() {
+        do {
+            let data = try JSONEncoder().encode(tabs)
+            UserDefaults.standard.set(data, forKey: tabsKey)
+        } catch {
+            print("Error loading tabs: \(error)")
+        }
+    }
+    
+    private func loadTabs() {
+        guard let data = UserDefaults.standard.data(forKey: tabsKey) else {
+            return
+        }
+        
+        do {
+            let decoded = try JSONDecoder().decode([TabItem].self, from: data)
+            tabs = decoded
+        } catch {
+            print("Error loading tabs: \(error)")
+            
+            // Reset data
+            UserDefaults.standard.removeObject(forKey: tabsKey)
+            tabs = []
+        }
     }
 }

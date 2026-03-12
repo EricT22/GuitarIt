@@ -43,3 +43,7 @@ https://firebase.google.com/docs/auth/ios/anonymous-auth
 
 App Storage and UserDefaults
 https://developer.apple.com/documentation/SwiftUI/AppStorage
+
+
+JSON Encoding/Decoding
+https://developer.apple.com/documentation/foundation/using-json-with-custom-types
