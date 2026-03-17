@@ -13,6 +13,7 @@ class TabWriterViewModel: ObservableObject {
     
     
     init() {
+        ensureDirectoriesExist()
         loadTabs()
     }
     
@@ -33,13 +34,27 @@ class TabWriterViewModel: ObservableObject {
         }
     }
     
-    func createNewTab() {
-        // temp for now
-        let placeholderURL = URL(filePath: "/dev/null");
+    func createNewTab(storage: StorageOption) {
+        let directory = activeDirectory(storageOption: storage)
         
-        let newTab = TabItem(name: "", fileURL: placeholderURL)
+        let id = UUID()
+        let fileURL = directory.appendingPathComponent("\(id.uuidString).txt")
         
-        tabs.append(newTab)
+        let template: String = TabTemplateRegistry.shared.standardTemplate()
+        
+        do {
+            try template.write(to: fileURL, atomically: true, encoding: .utf8)
+            
+            let newTab = TabItem(
+                id: id,
+                name: "",
+                fileURL: fileURL
+            )
+            
+            tabs.append(newTab)
+        } catch {
+            print("Failed to create new tab: \(error)")
+        }
     }
     
     private func saveTabs() {
@@ -65,6 +80,46 @@ class TabWriterViewModel: ObservableObject {
             // Reset data
             UserDefaults.standard.removeObject(forKey: tabsKey)
             tabs = []
+        }
+    }
+    
+    private func ensureDirectoriesExist() {
+        let fm = FileManager.default
+        
+        let localDir = fm.localTabsDirectory
+        
+        if (!fm.fileExists(atPath: localDir.path())) {
+            do {
+                try fm.createDirectory(at: localDir, withIntermediateDirectories: true)
+            } catch {
+                print("Failed to create local directory: \(error)")
+            }
+        }
+        
+        if let iCloudDir = fm.iCloudTabsDirectory {
+            if (!fm.fileExists(atPath: iCloudDir.path())){
+                do {
+                    try fm.createDirectory(at: iCloudDir, withIntermediateDirectories: true)
+                } catch {
+                    print("Failed to create iCloud directory: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func activeDirectory(storageOption: StorageOption) -> URL {
+        let fm = FileManager.default
+        
+        switch storageOption {
+        case .local:
+            return fm.localTabsDirectory
+        case .cloud:
+            // If iCloud isn't available just use local storage
+            if let iCloudDir = fm.iCloudTabsDirectory {
+                return iCloudDir
+            } else {
+                return fm.localTabsDirectory
+            }
         }
     }
 }

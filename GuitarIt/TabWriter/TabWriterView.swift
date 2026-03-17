@@ -65,7 +65,7 @@ struct TabWriterView: View {
                 Spacer()
                 Button(
                     action: {
-                        viewModel.createNewTab()
+                        viewModel.createNewTab(storage: storageOption)
                         
                     }, label: {
                         Image(systemName: "plus")

@@ -47,3 +47,7 @@ https://developer.apple.com/documentation/SwiftUI/AppStorage
 
 JSON Encoding/Decoding
 https://developer.apple.com/documentation/foundation/using-json-with-custom-types
+
+Files
+https://www.codegenes.net/blog/save-file-in-document-directory-in-swift-3/?utm_source=copilot.com
+https://developer.apple.com/documentation/foundation/filemanager/url%28forubiquitycontaineridentifier:%29?utm_source=copilot.com (iCloud)
