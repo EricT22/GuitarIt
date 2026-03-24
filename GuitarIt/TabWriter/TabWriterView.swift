@@ -16,72 +16,88 @@ struct TabWriterView: View {
     @State private var showSettings: Bool = false
     @State private var isEditing: Bool = false
     
+    @State private var navigationPath = NavigationPath()
+    
     
     var body: some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Button(action: {
-                        isEditing.toggle()
-                    }, label: {
-                        Text(isEditing ? "Done" : "Edit")
-                            .font(.system(size: 20))
-                    })
-                    Spacer()
-                    Button(action: {
-                        showSettings = true
-                    }, label: {
-                        Image(systemName: "gearshape")
-                            .font(.system(size: 20))
-                    })
-                }
-                    .padding(.horizontal)
-                
-                Text("Tab Writer")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                Spacer()
-                
-                List {
-                    let sortedTabs = viewModel.sortedTabs(sortMode: sortMode)
-                    
-                    if (sortedTabs.isEmpty){
-                        Text("No tabs yet")
-                            .foregroundStyle(Color.secondary)
-                    } else {
-                        ForEach(sortedTabs) { tab in
-                            if let index = viewModel.tabs.firstIndex(where: { $0.id == tab.id }){
-                                TabRow(tab: $viewModel.tabs[index])
-                            }
-                        }
-                        .onDelete(perform: { indexSet in
-                            viewModel.tabs.remove(atOffsets: indexSet)
+        NavigationStack(path: $navigationPath) {
+            ZStack {
+                VStack {
+                    HStack {
+                        Button(action: {
+                            isEditing.toggle()
+                        }, label: {
+                            Text(isEditing ? "Done" : "Edit")
+                                .font(.system(size: 20))
+                        })
+                        Spacer()
+                        Button(action: {
+                            showSettings = true
+                        }, label: {
+                            Image(systemName: "gearshape")
+                                .font(.system(size: 20))
                         })
                     }
-                }
-                    .scrollContentBackground(.hidden)
-                    .environment(\.editMode, .constant( isEditing ? .active : .inactive))
-                
-                Spacer()
-                Button(
-                    action: {
-                        viewModel.createNewTab(storage: storageOption)
+                        .padding(.horizontal)
+                    
+                    Text("Tab Writer")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    Spacer()
+                    
+                    List {
+                        let sortedTabs = viewModel.sortedTabs(sortMode: sortMode)
                         
-                    }, label: {
-                        Image(systemName: "plus")
-                            .font(.system(size: 40))
-                            .fontWeight(.bold)
-                            .frame(width: 50, height: 50)
-                    })
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.circle)
-                    .padding()
+                        if (sortedTabs.isEmpty){
+                            Text("No tabs yet")
+                                .foregroundStyle(Color.secondary)
+                        } else {
+                            ForEach(sortedTabs) { tab in
+                                if let index = viewModel.tabs.firstIndex(where: { $0.id == tab.id }){
+                                    TabRow(tab: $viewModel.tabs[index])
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            navigationPath.append(tab)
+                                        }
+                                }
+                            }
+                            .onDelete(perform: viewModel.delete)
+                        }
+                    }
+                        .scrollContentBackground(.hidden)
+                        .environment(\.editMode, .constant( isEditing ? .active : .inactive))
+                    
+                    Spacer()
+                    Button(
+                        action: {
+                            viewModel.createNewTab(storage: storageOption)
+                            
+                        }, label: {
+                            Image(systemName: "plus")
+                                .font(.system(size: 40))
+                                .fontWeight(.bold)
+                                .frame(width: 50, height: 50)
+                        })
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.circle)
+                        .padding()
+                }
             }
+            .sheet(isPresented: $showSettings, content: {
+                SettingsView(storageOption: $storageOption, sortMode: $sortMode)
+                    .presentationDetents([.height(300)])
+            })
+            .navigationDestination(for: TabItem.self, destination: { tab in
+                if let index = viewModel.tabs.firstIndex(where: { $0.id == tab.id}) {
+                    TabEditView(tab: $viewModel.tabs[index])
+                        .onAppear {
+                            viewModel.markTabAsUsed(tab)
+                        }
+                } else {
+                    Text("Tab not found")
+                }
+            })
         }
-        .sheet(isPresented: $showSettings, content: {
-            SettingsView(storageOption: $storageOption, sortMode: $sortMode)
-                .presentationDetents([.height(300)])
-        })
     }
 }
 

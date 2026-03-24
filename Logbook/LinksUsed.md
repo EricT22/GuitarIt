@@ -49,5 +49,10 @@ JSON Encoding/Decoding
 https://developer.apple.com/documentation/foundation/using-json-with-custom-types
 
 Files
-https://www.codegenes.net/blog/save-file-in-document-directory-in-swift-3/?utm_source=copilot.com
-https://developer.apple.com/documentation/foundation/filemanager/url%28forubiquitycontaineridentifier:%29?utm_source=copilot.com (iCloud)
+https://www.codegenes.net/blog/save-file-in-document-directory-in-swift-3/
+https://developer.apple.com/documentation/foundation/filemanager/url%28forubiquitycontaineridentifier:%29 (iCloud)
+
+
+Property Wrappers
+https://mehmetbaykar.com/posts/swiftui-property-wrappers-complete-reference-guide/
+https://www.codegenes.net/blog/how-do-i-initialize-a-view-which-takes-in-a-stateobject-as-a-parameter/

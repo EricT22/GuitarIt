@@ -1,29 +1,33 @@
 import SwiftUI
 
 struct TabEditView: View {
-//    let tab: TabItem
+    @Binding var tab: TabItem
     
+    @StateObject private var viewModel: TabEditViewModel
     @State private var isEditingTitle: Bool = false
     
-    @State private var name: String = "Untitled Tab"
-    @State private var content: String = """
-            
-            e|------------------------------
-            B|------------------------------
-            G|------------------------------
-            D|------------------------------
-            A|------------------------------
-            E|------------------------------
-
-            """
+    init(tab: Binding<TabItem>) {
+        // _varname is the wrapper value... this is what has to be initialized so Swift can keep track of it
+        self._tab = tab
+        
+        _viewModel = StateObject(wrappedValue: TabEditViewModel(tab: tab.wrappedValue))
+    }
     
     var body: some View {
         VStack {
-            TextEditor(text: $content)
+            TextEditor(text: $viewModel.content)
                 .font(.system(.body, design: .monospaced))
                 .padding(.horizontal)
                 .scrollContentBackground(.hidden)
-                .frame(maxHeight: .infinity)
+                .frame(minWidth: 1, maxWidth: .infinity, minHeight: 1, maxHeight: .infinity)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled(true)
+        }
+        .onChange(of: viewModel.content) {
+            viewModel.content = sanitizeInput(viewModel.content)
+        }
+        .onChange(of: tab.name) {
+            tab.name = sanitizeInput(tab.name)
         }
         .simultaneousGesture(
             TapGesture().onEnded {
@@ -33,24 +37,18 @@ struct TabEditView: View {
             }
         )
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    isEditingTitle = false
-                }, label: {
-                    Image(systemName: "chevron.left")
-                })
-            }
             
             ToolbarItem(placement: .principal) {
                 if (isEditingTitle) {
-                    TextField("Name", text: $name, onCommit: {
+                    TextField("Name", text: $tab.name, onCommit: {
                         isEditingTitle = false
                     })
                     .textFieldStyle(.roundedBorder)
                     .frame(maxWidth: 200)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(true)
                 } else {
-                    //Text(tab.displayName)
-                    Text(name)
+                    Text(tab.displayName)
                         .font(.headline)
                         .onTapGesture {
                             isEditingTitle = true
@@ -73,14 +71,17 @@ struct TabEditView: View {
             }
         }
         .onAppear {
-            // stuff
+            viewModel.load()
+        }
+        .onDisappear() {
+            viewModel.save()
         }
     }
 }
 
-
-#Preview {
-    NavigationStack {
-        TabEditView()
-    }
-}
+//
+//#Preview {
+//    NavigationStack {
+//        TabEditView()
+//    }
+//}
