@@ -65,8 +65,10 @@ struct TabEditView: View {
 
                 Button(action: {
                     isEditingTitle = false
+                    
+                    viewModel.appendTemplate()
                 }, label: {
-                    Image(systemName: "square.and.arrow.down")
+                    Image(systemName: "plus")
                 })
             }
         }

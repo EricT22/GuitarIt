@@ -70,7 +70,8 @@ struct TabWriterView: View {
                     Spacer()
                     Button(
                         action: {
-                            viewModel.createNewTab(storage: storageOption)
+                            // Eventually replace String w/ var that changes based on a setting that sets base template
+                            viewModel.createNewTab(storage: storageOption, template: "standard")
                             
                         }, label: {
                             Image(systemName: "plus")

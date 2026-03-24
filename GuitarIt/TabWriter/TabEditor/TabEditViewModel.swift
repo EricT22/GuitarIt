@@ -6,11 +6,21 @@ class TabEditViewModel: ObservableObject {
     @Published var content: String = ""
     
     let fileURL: URL
+    var templateName: String
     
     
     init(tab: TabItem) {
         self.fileURL = tab.fileURL
+        self.templateName = tab.templateName
     }
+    
+    
+    func appendTemplate(){
+        let templateContent = TabTemplateRegistry.shared.template(named: templateName)!
+        
+        content += templateContent
+    }
+    
     
     func load() {
         do {

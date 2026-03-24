@@ -40,7 +40,7 @@ class TabWriterViewModel: ObservableObject {
     
     func markTabAsUsed(_ tab: TabItem) {
         if let index = tabs.firstIndex(where: { $0.id == tab.id }) {
-            tabs[index].lastUsed = Date()
+            tabs[index].markUsed()
         }
     }
     
@@ -48,16 +48,27 @@ class TabWriterViewModel: ObservableObject {
     
     
     
-    func createNewTab(storage: StorageOption) {
+    func createNewTab(storage: StorageOption, template: String) {
         let directory = activeDirectory(storageOption: storage)
         
         let id = UUID()
         let fileURL = directory.appendingPathComponent("\(id.uuidString).txt")
         
-        let template: String = TabTemplateRegistry.shared.standardTemplate()
+        let registry = TabTemplateRegistry.shared
+        let templateContent: String
+        let templateName: String
+        
+        if let content = registry.template(named: template) {
+            templateContent = content
+            templateName = template
+        } else {
+            templateContent = registry.standardTemplate()
+            templateName = registry.allTemplates.first!.name
+        }
+            
         
         do {
-            try template.write(to: fileURL, atomically: true, encoding: .utf8)
+            try templateContent.write(to: fileURL, atomically: true, encoding: .utf8)
             
         } catch {
             print("Failed to create new tab: \(error)")
@@ -67,6 +78,7 @@ class TabWriterViewModel: ObservableObject {
         let newTab = TabItem(
             id: id,
             name: "",
+            templateName: templateName,
             fileURL: fileURL
         )
         

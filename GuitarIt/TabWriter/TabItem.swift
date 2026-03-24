@@ -4,6 +4,7 @@ struct TabItem: Identifiable, Hashable, Codable {
     let id: UUID
     var isFavorite: Bool
     var name: String
+    var templateName: String
     let createdAt: Date
     var lastUsed: Date
     
@@ -21,6 +22,7 @@ struct TabItem: Identifiable, Hashable, Codable {
         id: UUID = UUID(),
         isFavorite: Bool = false,
         name: String,
+        templateName: String,
         createdAt: Date = Date(),
         lastUsed: Date = Date(),
         fileURL: URL
@@ -28,6 +30,7 @@ struct TabItem: Identifiable, Hashable, Codable {
         self.id = id
         self.isFavorite = isFavorite
         self.name = name
+        self.templateName = templateName
         self.createdAt = createdAt
         self.lastUsed = lastUsed
         self.fileURL = fileURL
