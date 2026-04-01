@@ -4,12 +4,12 @@ import Combine
 struct TabTemplate: Codable, Hashable, Identifiable {
     let id: UUID
     var name: String
-    var content: String
+    var stringNames: [String]
     
-    init (id: UUID = UUID(), name: String, content: String) {
+    init (id: UUID = UUID(), name: String, stringNames: [String]) {
         self.id = id
         self.name = name
-        self.content = content
+        self.stringNames = stringNames
     }
 }
 
@@ -24,16 +24,7 @@ final class TabTemplateRegistry: ObservableObject {
     private(set) var builtIn: [TabTemplate] = [
         TabTemplate(
             name: "standard",
-            content: """
-            
-            e|------------------------------
-            B|------------------------------
-            G|------------------------------
-            D|------------------------------
-            A|------------------------------
-            E|------------------------------
-
-            """
+            stringNames: ["e", "B", "G", "D", "A", "E"]
         )
     ]
     
@@ -51,12 +42,12 @@ final class TabTemplateRegistry: ObservableObject {
         loadUserTemplates()
     }
     
-    func template(named name: String) -> String? {
-        return allTemplates.first(where: { $0.name == name })?.content
+    func template(named name: String) -> [String]? {
+        return allTemplates.first(where: { $0.name == name })?.stringNames
     }
     
-    func standardTemplate() -> String {
-        return builtIn.first(where: { $0.name == "standard" })!.content
+    func standardTemplate() -> [String] {
+        return builtIn.first(where: { $0.name == "standard" })!.stringNames
     }
     
     func updateUserTemplates(template: TabTemplate) {

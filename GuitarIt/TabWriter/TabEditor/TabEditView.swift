@@ -6,6 +6,7 @@ struct TabEditView: View {
     @StateObject private var viewModel: TabEditViewModel
     @State private var isEditingTitle: Bool = false
     
+    
     init(tab: Binding<TabItem>) {
         // _varname is the wrapper value... this is what has to be initialized so Swift can keep track of it
         self._tab = tab
@@ -15,16 +16,14 @@ struct TabEditView: View {
     
     var body: some View {
         VStack {
-            TextEditor(text: $viewModel.content)
-                .font(.system(.body, design: .monospaced))
-                .padding(.horizontal)
-                .scrollContentBackground(.hidden)
-                .frame(minWidth: 1, maxWidth: .infinity, minHeight: 1, maxHeight: .infinity)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
-        }
-        .onChange(of: viewModel.content) {
-            viewModel.content = sanitizeInput(viewModel.content)
+            ScrollView(.vertical) {
+                VStack {
+                    ForEach($viewModel.grids) { $gridModel in
+                        TabEditorGrid(model: $gridModel)
+                    }
+                }
+                .padding()
+            }
         }
         .onChange(of: tab.name) {
             tab.name = sanitizeInput(tab.name)
@@ -66,7 +65,7 @@ struct TabEditView: View {
                 Button(action: {
                     isEditingTitle = false
                     
-                    viewModel.appendTemplate()
+                    viewModel.appendGridFromTemplate()
                 }, label: {
                     Image(systemName: "plus")
                 })

@@ -55,17 +55,19 @@ class TabWriterViewModel: ObservableObject {
         let fileURL = directory.appendingPathComponent("\(id.uuidString).txt")
         
         let registry = TabTemplateRegistry.shared
-        let templateContent: String
+        let stringNames: [String]
         let templateName: String
         
-        if let content = registry.template(named: template) {
-            templateContent = content
+        if let names = registry.template(named: template) {
+            stringNames = names
             templateName = template
         } else {
-            templateContent = registry.standardTemplate()
+            stringNames = registry.standardTemplate()
             templateName = registry.allTemplates.first!.name
         }
-            
+        
+        let grid = TabEditorModel(stringNames: stringNames)
+        let templateContent = grid.toString()
         
         do {
             try templateContent.write(to: fileURL, atomically: true, encoding: .utf8)

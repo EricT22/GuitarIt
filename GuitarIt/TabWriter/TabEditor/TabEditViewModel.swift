@@ -3,7 +3,7 @@ import Combine
 
 
 class TabEditViewModel: ObservableObject {
-    @Published var content: String = ""
+    @Published var grids: [TabEditorModel] = []
     
     let fileURL: URL
     var templateName: String
@@ -15,29 +15,43 @@ class TabEditViewModel: ObservableObject {
     }
     
     
-    func appendTemplate(){
-        let templateContent = TabTemplateRegistry.shared.template(named: templateName)!
+    func parseASCIItoGrids(_ text: String) -> [TabEditorModel] {
+        let blocks = text.split(separator: "\n\n").map(String.init)
         
-        content += templateContent
+        return blocks.map { TabEditorModel(contentBlock: $0) }
+    }
+    
+    func stringifyGrids(_ grids: [TabEditorModel]) -> String {
+        return grids
+                .map{ $0.toString() }
+                .joined(separator: "\n\n")
+    }
+    
+    
+    func appendGridFromTemplate(){
+        let template = TabTemplateRegistry.shared.template(named: templateName)!
+        
+        grids.append(TabEditorModel(stringNames: template))
     }
     
     
     func load() {
         do {
             let text = try String(contentsOfFile: fileURL.path(), encoding: .utf8)
-            content = text
+            
+            grids = parseASCIItoGrids(text)
         } catch {
             print("Failed to load tab contents: \(error)")
-            content = "" // fallback
+            // fallback
+            grids = []
         }
     }
     
     func save() {
-        let cleaned = repadAllLines(in: content, toWidth: 30)
-        content = cleaned
+        let content = stringifyGrids(grids)
         
         do {
-            try cleaned.write(to: fileURL, atomically: true, encoding: .utf8)
+            try content.write(to: fileURL, atomically: true, encoding: .utf8)
         } catch {
             print("Failed to save tab content: \(error)")
         }
