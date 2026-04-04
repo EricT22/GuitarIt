@@ -37,6 +37,11 @@ struct TabEditorModel: Identifiable, Codable, Hashable {
     }
     
     
+    func duplicate() -> TabEditorModel {
+        TabEditorModel(id: UUID(), stringNames: self.stringNames, grid: self.grid)
+    }
+    
+    
     func toString() -> String {
         zip(stringNames, grid)
             .map { name, row in "\(name)|" + row.joined() }

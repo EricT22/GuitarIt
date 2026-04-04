@@ -13,7 +13,7 @@ struct TuningStandard: View {
                 .keyboardType(.numberPad)
                 .font(.title3)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color.blue)
+                .foregroundStyle(Color.blue)
                 .focused($isFocused)
                 .onChange(of: aVal) { _, newValue in
                     validateInput(newValue)
