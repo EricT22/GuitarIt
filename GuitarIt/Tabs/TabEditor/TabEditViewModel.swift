@@ -6,8 +6,6 @@ internal import CoreGraphics
 class TabEditViewModel: ObservableObject {
     @Published var grids: [TabEditorModel] = []
     
-    @Published var gridFrames: [UUID: CGRect] = [:]
-    
     let fileURL: URL
     var templateName: String
     
@@ -67,6 +65,29 @@ class TabEditViewModel: ObservableObject {
         selectedGridIDs.removeAll()
     }
     
+    
+    func moveGrid(_ id: UUID, movingUpwards: Bool) {
+        let index = grids.firstIndex(where: { $0.id == id })!
+        let to: Int
+        
+        if (movingUpwards) {
+            to = index - 1
+            
+            if !(to < 0) {
+                let contentCopy = grids[to].grid
+                grids[to].modifyContent(grids[index].grid)
+                grids[index].modifyContent(contentCopy)
+            }
+        } else {
+            to = index + 1
+            
+            if !(to >= grids.count) {
+                let contentCopy = grids[to].grid
+                grids[to].modifyContent(grids[index].grid)
+                grids[index].modifyContent(contentCopy)
+            }
+        }
+    }
     
     
     func toggleSelection(for id: UUID) {

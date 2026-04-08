@@ -37,6 +37,11 @@ struct TabEditorModel: Identifiable, Codable, Hashable {
     }
     
     
+    mutating func modifyContent(_ grid: [[String]]) {
+        self.grid = grid // deep copy in Swift
+    }
+    
+    
     func duplicate() -> TabEditorModel {
         TabEditorModel(id: UUID(), stringNames: self.stringNames, grid: self.grid)
     }

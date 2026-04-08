@@ -1,4 +1,6 @@
-Killed visual reordering (laggy, no matter the solution) (4 hours 10 minutes)
+Killed visual drag reordering (laggy, no matter the solution) (4 hours 10 minutes)
+
+Added buttons for reordering (smooth, no lag ever) (40 min)
 
 Large refactor of TabEditView -> creation of GridCellView component (~1 hour 15min)
 

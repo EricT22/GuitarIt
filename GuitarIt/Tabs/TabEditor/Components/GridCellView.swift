@@ -28,6 +28,29 @@ struct GridCellView: View {
                 HStack {
                     Spacer()
                     
+                    // Move up
+                    Button(action: {
+                        dismissKeyboard()
+                        viewModel.moveGrid(gridModel.id, movingUpwards: true)
+                    }, label: {
+                        Image(systemName: "chevron.up")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(Color.secondary)
+                            .padding(8)
+                    })
+                    
+                    // Move down
+                    Button(action: {
+                        dismissKeyboard()
+                        viewModel.moveGrid(gridModel.id, movingUpwards: false)
+                    }, label: {
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(Color.secondary)
+                            .padding(8)
+                    })
+                    
+                    // Selection mode
                     Button(action: {
                         withAnimation (.easeInOut(duration: 0.25)){
                             dismissKeyboard()
