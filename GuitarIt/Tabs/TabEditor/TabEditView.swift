@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct TabEditView: View {
     @Binding var tab: TabItem
@@ -39,10 +40,6 @@ struct TabEditView: View {
                 .padding()
                 .animation(.easeInOut(duration: 0.15), value: viewModel.grids)
             }
-            .coordinateSpace(.named("scrollView"))
-        }
-        .onPreferenceChange(GridCellFramePreferenceKey.self) { frames in
-            viewModel.gridFrames = frames
         }
         .onChange(of: tab.name) {
             tab.name = sanitizeInput(tab.name)
