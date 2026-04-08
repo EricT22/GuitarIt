@@ -1,6 +1,16 @@
 
-Audio Player  
+Audio Player  (self contained, makes its own buffers)
 https://developer.apple.com/documentation/avfaudio/avaudioplayer  
+
+Audio Player Node (node that takes raw buffers and feeds them directly to audio engine loop aka less latency)
+https://developer.apple.com/documentation/avfaudio/avaudioplayernode
+
+Audio Engine
+https://developer.apple.com/documentation/avfaudio/avaudioengine
+
+Audio Buffer
+https://developer.apple.com/documentation/avfaudio/avaudiopcmbuffer
+
 
 Timer  
 https://developer.apple.com/documentation/foundation/timer  
@@ -56,3 +66,7 @@ https://developer.apple.com/documentation/foundation/filemanager/url%28forubiqui
 Property Wrappers
 https://mehmetbaykar.com/posts/swiftui-property-wrappers-complete-reference-guide/
 https://www.codegenes.net/blog/how-do-i-initialize-a-view-which-takes-in-a-stateobject-as-a-parameter/
+
+
+Dispatch Source Timer (doesn't fire on main loop, more consistent than the other timer)
+https://developer.apple.com/documentation/dispatch/dispatchsourcetimer

@@ -15,7 +15,7 @@ class MetronomeViewModel: ObservableObject {
     @Published var started: Bool = false;
     
     private let metronome = Metronome()
-    private var timer: Timer? = nil
+    private var timer: DispatchSourceTimer? = nil
     
     func startStop() {
         started.toggle()
@@ -28,15 +28,23 @@ class MetronomeViewModel: ObservableObject {
     }
     
     func stopMetronome() {
-        timer?.invalidate() // stops from running and removes requests from "run loop"
+        timer?.cancel() // stops from running and removes requests from "run loop"
         timer = nil // throws the timer away
     }
 
     func playMetronome() {
+        stopMetronome() // just in case
         
-        timer = Timer.scheduledTimer(withTimeInterval: 60.0 / Double(bpm), repeats: true) {_ in
-            self.metronome.click()
+        let interval = 60.0 / Double(bpm)
+        
+        let timer = DispatchSource.makeTimerSource(queue: .global(qos: .userInitiated))
+        timer.schedule(deadline: .now(), repeating: interval)
+        timer.setEventHandler { [weak self] in
+            self?.metronome.click()
         }
+        timer.resume()
+        
+        self.timer = timer
     }
     
     func onChange(){
