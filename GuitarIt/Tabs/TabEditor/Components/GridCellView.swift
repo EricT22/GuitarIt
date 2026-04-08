@@ -120,18 +120,11 @@ struct GridCellView: View {
                 viewModel.toggleSelection(for: gridModel.id)
             }
         }
-        .onLongPressGesture {
-            withAnimation(.easeInOut(duration: 0.25)) {
-                dismissKeyboard()
-                viewModel.selectionMode = true
-                viewModel.selectedGridIDs = [gridModel.id] // selecting the current, pressed grid
-            }
-        }
-        .background(GeometryReader { geo in
-            Color.clear.preference(
-                key: GridCellFramePreferenceKey.self,
-                value: [gridModel.id: geo.frame(in: .named("scrollView"))]
-            )
-        })
+//        .background(GeometryReader { geo in
+//            Color.clear.preference(
+//                key: GridCellFramePreferenceKey.self,
+//                value: [gridModel.id: geo.frame(in: .named("scrollView"))]
+//            )
+//        })
     }
 }
