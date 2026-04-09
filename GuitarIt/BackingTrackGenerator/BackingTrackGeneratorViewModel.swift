@@ -3,7 +3,10 @@ import Combine
 
 // ViewModel for the BackingTrackGenerator section
 class BackingTrackGeneratorViewModel: ObservableObject {
-    // Required by ObservableObject protocol in iOS 17+
-    let objectWillChange = ObservableObjectPublisher()
-    // Add backing track generator logic here
+    
+    @Published var tempo: String = "120"
+    
+    
+    @Published var beatCount: String = "4"
+    @Published var beatUnit: String = "4"
 }
