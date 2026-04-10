@@ -10,4 +10,4 @@ Abstract submission to fos (~10 min)
 Fixed metronome latency issue by swapping out AudioPlayer with AudioPlayerNode (~1 hour)
 
 
-Started working on backing track generator UI as a proof of concept (~2 hours)
+Created backing track generator UI as a proof of concept (~4 hours)
