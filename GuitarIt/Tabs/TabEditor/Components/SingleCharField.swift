@@ -54,11 +54,21 @@ struct SingleCharField: UIViewRepresentable {
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             // If empty, restore "-"
             if parent.text.isEmpty {
-                parent.text = "-"
+                DispatchQueue.main.async {
+                    self.parent.text = "-"
+                }
             }
 
             textField.resignFirstResponder()
             return false   // prevent inserting any characters
+        }
+        
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            if parent.text.isEmpty {
+                DispatchQueue.main.async {
+                    self.parent.text = "-"
+                }
+            }
         }
 
     }

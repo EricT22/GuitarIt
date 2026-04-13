@@ -42,7 +42,7 @@ struct TabEditView: View {
             }
         }
         .onChange(of: tab.name) {
-            tab.name = sanitizeInput(tab.name)
+            tab.name = sanitizeTitle(tab.name)
         }
         .simultaneousGesture(
             TapGesture().onEnded {

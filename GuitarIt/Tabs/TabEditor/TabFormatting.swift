@@ -5,7 +5,6 @@ func sanitizeInput(_ text: String) -> String {
     // Allowed:
     // - letters
     // - numbers
-    // - spaces
     // - dash, pipe, newline (for tab content)
 
     let allowed = CharacterSet(
@@ -17,6 +16,24 @@ func sanitizeInput(_ text: String) -> String {
         .map(String.init)
         .joined()
 }
+
+func sanitizeTitle(_ text: String) -> String {
+    // Allowed:
+    // - letters
+    // - numbers
+    // - spaces
+
+    let allowed = CharacterSet(
+        charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -'’|/\\"
+    )
+
+    return text.unicodeScalars
+        .filter { allowed.contains($0) }
+        .map(String.init)
+        .joined()
+}
+
+
 
 func repadAllLines(in text: String, toWidth width: Int) -> String {
     return text

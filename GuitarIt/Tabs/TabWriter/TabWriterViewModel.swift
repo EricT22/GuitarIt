@@ -90,15 +90,17 @@ class TabWriterViewModel: ObservableObject {
     
     
     
-    func delete(at offsets: IndexSet) {
-        let items = offsets.map{ tabs[$0] }
+    func delete(at offsets: IndexSet, from sorted: [TabItem]) {
+        let itemsToDelete = offsets.map{ sorted[$0] }
         
-        for tab in items {
+        for tab in itemsToDelete {
             try? FileManager.default.removeItem(at: tab.fileURL)
         }
         
-        for index in offsets.sorted(by: >) {
-            tabs.remove(at: index)
+        for tab in itemsToDelete {
+            if let index = tabs.firstIndex(where: { $0.id == tab.id }) {
+                tabs.remove(at: index)
+            }
         }
     }
     

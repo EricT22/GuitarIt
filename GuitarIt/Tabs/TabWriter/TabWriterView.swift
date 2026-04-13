@@ -61,7 +61,11 @@ struct TabWriterView: View {
                                         }
                                 }
                             }
-                            .onDelete(perform: viewModel.delete)
+                            .onDelete { offsets in
+                                withAnimation(.easeInOut) {
+                                    viewModel.delete(at: offsets, from: sortedTabs)
+                                }
+                            }
                         }
                     }
                         .scrollContentBackground(.hidden)
