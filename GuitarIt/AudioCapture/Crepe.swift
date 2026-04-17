@@ -13,7 +13,7 @@ class Crepe {
         crepe = try! CREPE_SMALL(configuration: .init())
     }
     
-    func predict(from audioFrame: [Float]) -> (pitch: Float, confidence: Float)?{
+    func predict(from audioFrame: [Float]) -> (pitch: Float, confidence: Float)? {
         guard let input = arrayToMLArray(audioFrame) else { return nil }
         
         guard let output = try? crepe.prediction(input: input) else { return nil }
