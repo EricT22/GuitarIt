@@ -12,14 +12,16 @@ class TunerViewModel: ObservableObject {
         }
     }
     
-    private let audioCapture = AudioCapture()
+    private let crepeProcessor = CrepeProcessor()
+    private let audioService = AudioCaptureService.shared
+    private var listenerID: UUID? = nil
     
     private let notes: [String] = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
     private let baseAlpha: Double = 0.2
     private var smoothedFrequency: Double? = nil
     
     init(){
-        audioCapture.onPitchPredict = {[weak self] pitch, confidence in
+        crepeProcessor.onPitchPredict = {[weak self] pitch, confidence in
             guard confidence > 0.2 else { return }
             self?.updateDisplayedNote(frequency: Double(pitch), confidence: Double(confidence))
         }
@@ -90,9 +92,19 @@ class TunerViewModel: ObservableObject {
     
     private func handleToggle() {
         if isOn {
-            try? audioCapture.start()
+            // Subscribe
+            listenerID = audioService.addListener{ [weak self] samples in
+                self?.crepeProcessor.process(samples: samples)
+            }
+            
+            audioService.startIfNeeded()
         } else {
-            audioCapture.stop()
+            // Unsubscribe
+            if let id = listenerID {
+                audioService.removeListener(id)
+                listenerID = nil
+            }
+            audioService.stopIfPossible()
             
             // Reset UI
             DispatchQueue.main.async {

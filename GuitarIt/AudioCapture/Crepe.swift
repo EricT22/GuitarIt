@@ -23,7 +23,7 @@ class Crepe {
         return analyzeCREPEOutput(bins)
     }
     
-    func analyzeCREPEOutput(_ bins : MLMultiArray) -> (pitch: Float, confidence: Float) {
+    private func analyzeCREPEOutput(_ bins : MLMultiArray) -> (pitch: Float, confidence: Float) {
         var center = 0
         var maxVal = -Float.infinity
         
@@ -44,7 +44,7 @@ class Crepe {
     }
     
     // Translation into swift of function of the same name in Github source code
-    func toLocalAverageCents(bins: MLMultiArray, center: Int) -> Float {
+    private func toLocalAverageCents(bins: MLMultiArray, center: Int) -> Float {
         // Building cents mapping
         var centsMapping = [Float](repeating: 0.0, count: 360)
         let offset: Float = 1997.3794084376191
@@ -70,13 +70,13 @@ class Crepe {
         return productSum / weightSum
     }
     
-    func centsToHz(cents: Float) -> Float {
+    private func centsToHz(cents: Float) -> Float {
         // From line 265 of Github source code
         return 10.0 * pow(2.0, cents / 1200.0)
     }
     
     
-    func arrayToMLArray(_ frame : [Float]) -> MLMultiArray? {
+    private func arrayToMLArray(_ frame : [Float]) -> MLMultiArray? {
         guard frame.count == 1024 else { return nil }
         
         let shape = [1, 1024] as [NSNumber]
