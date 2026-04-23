@@ -8,4 +8,6 @@ Fixed three bugs in TabWriter (~30 min)
 
 Downloaded Basic Pitch mlpackage and moved it into program (looking through the github site, reading, understanding) (45 min) 
 
-Moving preprocess and postprocess logic over from Basic Pitch Python to Swift (2 hours 50 min so far)
+Moving preprocess and postprocess logic over from Basic Pitch Python to Swift (4 hours 10 min so far)
+
+Finished FOS poster (~30 min)

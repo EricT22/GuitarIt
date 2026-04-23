@@ -41,18 +41,27 @@ import CoreML
 class BasicPitch {
     private let model: nmp
     
-    private let overlapFrames = 30
-    private let framesPerWindow = 172
-    private let fftHop = 256
-    private let sampleRate = 22050
-    private let windowLengthSeconds = 2
+    let overlapFrames = 30
+    let framesPerWindow = 172
+    let fftHop = 256
+    let sampleRate = 22050
+    let windowLengthSeconds = 2
+    let windowSize = 43844
     
     init() {
         model = try! nmp(configuration: .init())
     }
     
     
-    func stitchOutput(windows: [MLMultiArray], audioOriginalLength: Int) -> MLMultiArray {
+    func predict(window: [Float]) -> nmpOutput? {
+        guard let mlarr = arrayToMLArray(window) else { return nil }
+        let input = nmpInput(input_2: mlarr)
+        
+        return try? model.prediction(input: input)
+    }
+    
+    
+    private func stitchOutput(windows: [MLMultiArray], audioOriginalLength: Int) -> MLMultiArray {
         let halfOverlap = overlapFrames / 2
         let trimmedFramesPerWindow = framesPerWindow - overlapFrames
 
@@ -99,5 +108,20 @@ class BasicPitch {
        }
 
        return result
+    }
+    
+    private func arrayToMLArray(_ window: [Float]) -> MLMultiArray? {
+        // Expected shape is [1, 43844, 1]
+        let shape: [NSNumber] = [1, NSNumber(value: windowSize), 1]
+        
+        guard let arr = try? MLMultiArray(shape: shape, dataType: .float32) else {
+            return nil
+        }
+        
+        for i in 0..<window.count {
+            arr[i] = NSNumber(value: window[i])
+        }
+        
+        return arr
     }
 }
