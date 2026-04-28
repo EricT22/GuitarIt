@@ -39,21 +39,32 @@
 import CoreML
 
 class BasicPitch {
+    private let post: BasicPitchPostProcessor = .init()
     private let model: nmp
     
-    let overlapFrames = 30
-    let framesPerWindow = 172
-    let fftHop = 256
-    let sampleRate = 22050
-    let windowLengthSeconds = 2
-    let windowSize = 43844
     
     init() {
         model = try! nmp(configuration: .init())
     }
     
     
-    func predict(window: [Float]) -> nmpOutput? {
+    func processWindow(_ window: [Float]) -> [NoteEvent] {
+        guard let output = predictRaw(window: window) else { return [] }
+        
+        let contours3D = output.Identity
+        let onsets3D = output.Identity_1
+        let frames3D = output.Identity_2
+        
+        let contours = flatten2D(contours3D)
+        let onsets = flatten2D(onsets3D)
+        let frames = flatten2D(frames3D)
+        
+        return post.modelOutputToNotes(frames: frames, onsets: onsets, contours: contours)
+    }
+    
+    
+    
+    private func predictRaw(window: [Float]) -> nmpOutput? {
         guard let mlarr = arrayToMLArray(window) else { return nil }
         let input = nmpInput(input_2: mlarr)
         
@@ -61,15 +72,18 @@ class BasicPitch {
     }
     
     
+    // Not needed, as this implementation will stream one window in at a time
+    // Output need not be stitched, as it will be sent to the model and processed as a miniclip of audio
+    // Stream therefore becomes multiple miniclips
     private func stitchOutput(windows: [MLMultiArray], audioOriginalLength: Int) -> MLMultiArray {
-        let halfOverlap = overlapFrames / 2
-        let trimmedFramesPerWindow = framesPerWindow - overlapFrames
+        let halfOverlap = BasicPitchConstants.overlapFrames / 2
+        let trimmedFramesPerWindow = BasicPitchConstants.framesPerWindow - BasicPitchConstants.overlapFrames
 
         // 1. Extract trimmed windows
         var trimmed: [[Float]] = []
 
         for window in windows {
-            let time = framesPerWindow
+            let time = BasicPitchConstants.framesPerWindow
             let freq = window.count / time
 
             var windowFrames: [[Float]] = []
@@ -85,7 +99,7 @@ class BasicPitch {
         }
 
         // 2. Compute expected total frames
-        let hopSize = (sampleRate * windowLengthSeconds - fftHop) - (overlapFrames * fftHop)
+        let hopSize = (BasicPitchConstants.sampleRate * BasicPitchConstants.windowLengthSeconds - BasicPitchConstants.fftHop) - (BasicPitchConstants.overlapFrames * BasicPitchConstants.fftHop)
         let nExpectedWindows = Double(audioOriginalLength) / Double(hopSize)
         let expectedFrames = Int(nExpectedWindows * Double(trimmedFramesPerWindow))
 
@@ -112,7 +126,7 @@ class BasicPitch {
     
     private func arrayToMLArray(_ window: [Float]) -> MLMultiArray? {
         // Expected shape is [1, 43844, 1]
-        let shape: [NSNumber] = [1, NSNumber(value: windowSize), 1]
+        let shape: [NSNumber] = [1, NSNumber(value: BasicPitchConstants.windowSize), 1]
         
         guard let arr = try? MLMultiArray(shape: shape, dataType: .float32) else {
             return nil
@@ -123,5 +137,32 @@ class BasicPitch {
         }
         
         return arr
+    }
+    
+    
+    private func flatten2D(_ array: MLMultiArray) -> [[Float]] {
+        precondition(array.shape.count == 3, "Expected: [1, T, F]")
+        
+        let time = array.shape[1].intValue
+        let frequency = array.shape[2].intValue
+        
+        var result = Array(
+            repeating: Array(repeating: Float(0), count: frequency),
+            count: time
+        )
+        
+        let s0 = array.strides[0].intValue // Batch dimension, its always 1 so we get rid of it
+        let s1 = array.strides[1].intValue
+        let s2 = array.strides[2].intValue
+        
+        for t in 0..<time {
+            for f in 0..<frequency {
+                let idx = t * s1 + f * s2
+                
+                result[t][f] = Float(truncating: array[idx])
+            }
+        }
+        
+        return result
     }
 }

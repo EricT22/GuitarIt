@@ -12,7 +12,7 @@ class BasicPitchProcessor {
     private let ratio: Float
     private var resampleAccumulator: Float = 0
     
-//    var onNotes: (([NoteEvent]) -> Void)?
+    var onNotes: (([NoteEvent]) -> Void)?
     
     init() {
         self.ratio = Float(inputRate) / Float(targetRate)
@@ -35,15 +35,21 @@ class BasicPitchProcessor {
         
         // Get windows
         // size of input needed for Basic Pitch (called AUDIO_N_SAMPLES in Spotify's source code)
-        let windowSize = basicPitch.windowSize
+        let windowSize = BasicPitchConstants.windowSize
         // windowSize - overlapLen ; where overlapLen = DEFAULT_OVERLAPPING_FRAMES * fftHop aka (30 * 256)
-        let hopSize = windowSize - (basicPitch.overlapFrames * basicPitch.fftHop)
+        let hopSize = windowSize - (BasicPitchConstants.overlapFrames * BasicPitchConstants.fftHop)
         
         while windowBuffer.count >= windowSize {
             let window = Array(windowBuffer[0..<windowSize])
             windowBuffer.removeFirst(hopSize)
             
-            // RUN MODEL HERE
+            // Model runs here
+            let notes = basicPitch.processWindow(window)
+            
+            
+            if !notes.isEmpty {
+                onNotes?(notes)
+            }
         }
     }
     
