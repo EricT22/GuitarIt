@@ -70,3 +70,7 @@ https://www.codegenes.net/blog/how-do-i-initialize-a-view-which-takes-in-a-state
 
 Dispatch Source Timer (doesn't fire on main loop, more consistent than the other timer)
 https://developer.apple.com/documentation/dispatch/dispatchsourcetimer
+
+
+Lock
+https://developer.apple.com/documentation/foundation/nslock
